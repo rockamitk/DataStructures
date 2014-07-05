@@ -1,0 +1,248 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+
+struct CNode{
+		int data;
+		struct CNode *next;
+	    };
+
+typedef struct CNode CNode;
+
+//Insertin at Front Node Circular Link List 
+	
+	void insertAtFront(CNode **head,int data){
+		CNode *current=*head;
+	
+		CNode *newNode=(CNode *)malloc(sizeof(CNode));
+	
+		if(!newNode){
+		printf("MemoryError");
+		return;
+		}
+		
+		newNode->data=data;
+
+		while(current->next != (*head))
+		 {current=current->next;}			
+
+printf(" %d\n",newNode->data);
+		newNode->next=newNode;
+
+		if(head == NULL){
+		*head=newNode;
+		} 
+		else{
+			newNode->next=*head;
+			current->next=newNode;
+			*head=newNode;
+		    }
+	return;	     
+	}       
+
+//Insertin at Trail Node Circular Link List 
+
+	void insertAtEnd(CNode **head,int data){
+		CNode *current=*head,*newNode;
+	
+		newNode=(CNode *)malloc(sizeof(CNode));
+	
+		if(!newNode){
+		printf("MemoryError");
+		return;
+		}
+
+		newNode->data=data;
+		newNode->next=newNode;
+
+		while(current->next!= (*head)){
+			 current=current->next;			
+			 
+			}
+
+		if(head == NULL){
+		*head=newNode;
+		} 
+		else{
+			newNode->next=*head;
+			current->next=newNode;
+		    }
+	return;	     
+	}       
+
+//Traversal of Circular Link List 
+
+	void Traverse(CNode *head){
+		CNode *current=head;
+
+		if(head == NULL){
+		printf("\t!~~~~~~~~List Empty~~~~~~~~~!\n");
+		return;
+		}
+		
+		printf("\tList :");
+		do{
+			printf(" %d",current->data);
+			current=current->next;
+		  }while(current!= head);
+
+		  printf("\n");
+
+        	}
+
+//Deletion Of Front Node Circular Link List 
+
+	void deleteAtFront(CNode **head){
+		CNode *temp=*head,*current=*head;
+
+		if(*head == NULL){
+		printf("\t!~~~~~~~~~~~~~~~List Empty~~~~~~~~~~~~~!\n");
+		return;
+		}
+		else{                        
+			while(current != (*head)){
+				temp=current;
+				current=current->next;
+				}
+			temp->next=current->next;
+			*head=current->next;
+			free(current);
+		     }
+		return;
+		}
+
+//Deletion Of Trail Node Circular Link List 
+
+	void deleteAtEnd(CNode **head){
+		CNode *temp,*current;
+
+		if(*head == NULL){
+		printf("\t!~~~~~~~~~~~~~~~List Empty~~~~~~~~~~~~~!\n");
+		return;
+		}
+		        temp=*head;current=*head;                
+			while(current->next != (*head)){
+				temp=current;
+				current=current->next;
+				}
+			temp->next=current->next;
+			free(current);
+		     
+		return;
+		}
+
+//Deletion Of Entire Circular Link List 
+
+		void DeleteLinkList(CNode **head)
+		{
+			CNode *auxiliaryNode,*iterator;
+			iterator=*head;
+			while(iterator)
+			{
+			auxiliaryNode=iterator->next;
+			free(iterator);
+			iterator=auxiliaryNode;
+			}	
+		*head=NULL;
+		return;
+		}
+		
+		
+	void SplitList(CNode *head,CNode **head1,CNode **head2)
+	{
+	CNode *slowPtr=head;
+	CNode *fastPtr=head;
+		if(head == NULL)
+		return;
+		while(fastPtr->next!=head && fastPtr->next->next!=head)
+		{
+		fastPtr=fastPtr->next->next;
+		slowPtr=slowPtr->next;
+		}
+	    if(fastPtr->next->next == head)
+	    fastPtr=fastPtr->next;
+	    
+	    *head1=head;
+	    if(head->next != head)
+	    	*head2=slowPtr->next;
+	    fastPtr->next=slowPtr->next;
+	    slowPtr->next=head;
+	}
+	    
+
+//Initialisation of Circular Link List 
+
+	CNode *create(){
+		
+	        CNode *head,*temp;
+	        head = (CNode *)malloc(sizeof(CNode)); 
+	        temp = head;
+	        temp -> next = head;	
+		return head;
+		}
+	
+
+//Main Functionof Circular Link List 
+
+   int main(){
+	int ch,data;
+        CNode *head,*head1,*head2;
+	head=create();head1=create();head2=create(); //Initialisation List
+
+
+    while(1){
+	
+		printf("\n");
+                printf("<1> Insert at Front node,  ");
+                printf("<2> Insert at Last node,  ");
+		printf("<3> Print Circular list\n");
+                printf("<4> Delete front Node, ");
+		printf("<5> Delete End Node, ");
+		printf("<6> Delete Entire List,  ");
+		printf("<7> Split list,  ");
+                printf("<0> Exit\n");
+
+                scanf("%d",&ch);
+
+		if(ch == 1){
+				printf("Enter Node : "); scanf("%d",&data);
+                        	insertAtFront(&head,data);
+			   }
+		else if(ch == 2){
+				printf("Enter Node : "); scanf("%d",&data);
+                        	insertAtEnd(&head,data);
+				}
+
+		else if(ch == 3){
+                        	Traverse(head);
+				}
+		
+		else if(ch == 4){
+                        	deleteAtFront(&head);
+				}
+
+		else if(ch == 5){
+                        	deleteAtEnd(&head);
+				}
+
+		else if(ch == 6){
+				DeleteLinkList(&head);
+				}
+
+		else if(ch == 7){
+				 splitList(head,&head1,&head2);
+				  Traverse(head1);
+				  Traverse(head2);
+				}
+		else if(ch == 0){
+		//		DeleteLinkList(&head);
+				exit(0);
+				}
+
+		else
+		printf("Invalid Choice \n");
+                
+	    }
+   return 0;
+	}
+
